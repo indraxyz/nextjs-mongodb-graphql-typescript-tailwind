@@ -1,0 +1,4 @@
+onlyBuiltDependencies:
+  - '@apollo/protobufjs'
+  - '@tailwindcss/oxide'
+  - sharp
