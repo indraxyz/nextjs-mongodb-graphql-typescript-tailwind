@@ -7,11 +7,17 @@ import {
   InMemoryCache,
 } from "@apollo/client-integration-nextjs";
 
+// if production use process.env.NEXT_PUBLIC_GRAPHQL_URL else use http://localhost:3000/api/graphql
+const graphqlUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_GRAPHQL_URL
+    : "http://localhost:3000/api/graphql";
+
 // have a function to create a client for you
 function makeClient() {
   const httpLink = new HttpLink({
     // this needs to be an absolute url, as relative urls cannot be used in SSR
-    uri: "http://localhost:3000/api/graphql",
+    uri: graphqlUrl,
     // Gunakan cache default untuk menghindari duplikasi request
     fetchOptions: {
       cache: "default",
