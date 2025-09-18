@@ -64,8 +64,23 @@ export default class Students extends MongoDataSource<StudentDocument> {
   // Function to create a new student
   async createStudent({ input }: any) {
     try {
-      return await Student.create({ ...input });
+      const now = new Date();
+      const studentData = {
+        ...input,
+        createdAt: now,
+        updatedAt: now,
+      };
+
+      const newStudent = await Student.create(studentData);
+      console.log("Created student with timestamps:", {
+        id: newStudent._id,
+        createdAt: newStudent.createdAt,
+        updatedAt: newStudent.updatedAt,
+      });
+
+      return newStudent;
     } catch (error) {
+      console.error("Error creating student:", error);
       throw new Error("Failed to create student");
     }
   }
@@ -73,15 +88,34 @@ export default class Students extends MongoDataSource<StudentDocument> {
   // Function to update existing student
   async updateStudent({ input }: any) {
     try {
+      const { id, ...updateData } = input;
+      const now = new Date();
+
       const updatedStudent = await Student.findByIdAndUpdate(
-        input.id,
-        { ...input },
+        id,
+        {
+          ...updateData,
+          updatedAt: now,
+        },
         {
           new: true,
+          runValidators: true,
         }
       );
+
+      if (!updatedStudent) {
+        throw new Error("Student not found");
+      }
+
+      console.log("Updated student with timestamps:", {
+        id: updatedStudent._id,
+        createdAt: updatedStudent.createdAt,
+        updatedAt: updatedStudent.updatedAt,
+      });
+
       return updatedStudent;
     } catch (error) {
+      console.error("Error updating student:", error);
       throw new Error("Failed to update student");
     }
   }

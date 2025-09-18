@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useStudentManagement } from "./study-graphql/hooks/useStudentManagement";
 import { Student } from "./study-graphql/types/student";
+import { formatDate } from "./study-graphql/utils/dateUtils";
 
 function StudentPreviewCard({ student }: { student: Student }) {
   return (
@@ -14,7 +15,7 @@ function StudentPreviewCard({ student }: { student: Student }) {
       <p className="text-gray-600 mb-2">{student.email}</p>
       <p className="text-sm text-gray-500 truncate">{student.address}</p>
       <div className="mt-4 text-xs text-gray-400">
-        Bergabung: {new Date(student.createdAt).toLocaleDateString("id-ID")}
+        Bergabung: {formatDate(student.createdAt)}
       </div>
     </div>
   );

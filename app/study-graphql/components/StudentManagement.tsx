@@ -7,33 +7,11 @@ import {
   useStudentSearch,
   useStudentUI,
 } from "../hooks";
-
-// Utility function untuk format tanggal dengan error handling
-const formatDateTime = (dateString: string | undefined | null): string => {
-  if (!dateString) return "N/A";
-
-  console.log("dateString", dateString);
-  // data: 2025-09-09T09:04:10.428+00:00
-
-  try {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      console.warn("Invalid date string:", dateString);
-      return "Invalid Date";
-    }
-    // Menggunakan toLocaleString untuk menampilkan tanggal dan waktu
-    return date.toLocaleString("id-ID", {
-      year: "numeric",
-      month: "short",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  } catch (error) {
-    console.error("Error parsing date:", dateString, error);
-    return "Invalid Date";
-  }
-};
+import {
+  formatDateTime,
+  formatDate,
+  getRelativeTime,
+} from "../utils/dateUtils";
 
 /**
  * Contoh penggunaan hooks individual untuk custom logic
@@ -412,7 +390,8 @@ export default function StudentManagementAdvanced() {
                   📍 {student.address || "-"}
                 </p>
                 <p className="text-gray-500 text-xs">
-                  Dibuat: {formatDateTime(student.createdAt)}
+                  Dibuat: {formatDate(student.createdAt)} (
+                  {getRelativeTime(student.createdAt)})
                 </p>
                 <p className="text-gray-500 text-xs">
                   Diperbarui: {formatDateTime(student.updatedAt)}

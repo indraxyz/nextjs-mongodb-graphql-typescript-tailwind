@@ -1,23 +1,51 @@
 const resolvers = {
   Student: {
     // Resolver untuk mengkonversi _id menjadi id
-    // id: (parent: any) => parent._id || parent.id,
+    id: (parent: any) => parent._id?.toString() || parent.id,
+
     // Resolver untuk mengkonversi Date menjadi ISO string
     createdAt: (parent: any) => {
       if (parent.createdAt) {
-        return parent.createdAt instanceof Date
-          ? parent.createdAt.toISOString()
-          : parent.createdAt;
+        try {
+          const date =
+            parent.createdAt instanceof Date
+              ? parent.createdAt
+              : new Date(parent.createdAt);
+
+          if (isNaN(date.getTime())) {
+            console.warn("Invalid createdAt date:", parent.createdAt);
+            return new Date().toISOString();
+          }
+
+          return date.toISOString();
+        } catch (error) {
+          console.error("Error parsing createdAt:", error);
+          return new Date().toISOString();
+        }
       }
-      return null;
+      return new Date().toISOString();
     },
+
     updatedAt: (parent: any) => {
       if (parent.updatedAt) {
-        return parent.updatedAt instanceof Date
-          ? parent.updatedAt.toISOString()
-          : parent.updatedAt;
+        try {
+          const date =
+            parent.updatedAt instanceof Date
+              ? parent.updatedAt
+              : new Date(parent.updatedAt);
+
+          if (isNaN(date.getTime())) {
+            console.warn("Invalid updatedAt date:", parent.updatedAt);
+            return new Date().toISOString();
+          }
+
+          return date.toISOString();
+        } catch (error) {
+          console.error("Error parsing updatedAt:", error);
+          return new Date().toISOString();
+        }
       }
-      return null;
+      return new Date().toISOString();
     },
   },
   Query: {
