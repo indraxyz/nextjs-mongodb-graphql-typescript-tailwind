@@ -8,10 +8,7 @@ import {
 } from "@apollo/client-integration-nextjs";
 
 // if production use process.env.NEXT_PUBLIC_GRAPHQL_URL else use http://localhost:3000/api/graphql
-const graphqlUrl =
-  process.env.NODE_ENV === "production"
-    ? process.env.NEXT_PUBLIC_GRAPHQL_URL
-    : "http://localhost:3000/api/graphql";
+const graphqlUrl = "/api/graphql";
 
 // have a function to create a client for you
 function makeClient() {
